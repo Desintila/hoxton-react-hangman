@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     const randomWord = data[Math.floor(Math.random() * data.length)]
-    setWord(randomWord)
+    setWord(randomWord.toLowerCase())
   }, [])
 
   useEffect(() => {
@@ -39,9 +39,6 @@ function App() {
   }
 
 
-
-
-
   return (
     <div className="App" >
       <section className='hangman'>
@@ -54,6 +51,8 @@ function App() {
             return (<span>_</span>)
           })
         }
+        <span>{getWrongLetters().length === 5 ? 'Lost' : ''}</span>
+        <span>{getRightLetters().join('') === word ? 'Won' : ''}</span>
       </section>
     </div >
   )
