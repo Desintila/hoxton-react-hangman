@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import Result from './components.jsx/Result'
 import { data } from './data'
 
 function App() {
+  const randomWord = (data[Math.floor(Math.random() * data.length)]).toLowerCase()
 
-  const [word, setWord] = useState('')
+
+  const [word, setWord] = useState(randomWord)
   const [guesses, setGuesses] = useState([])
-
-  useEffect(() => {
-    const randomWord = data[Math.floor(Math.random() * data.length)]
-    setWord(randomWord.toLowerCase())
-  }, [])
-
+  const englishLetters = 'abcdefghijklmnopqrstuvwxyz'
   useEffect(() => {
     function handleOnClick(event) {
-      setGuesses(oldArray => [...oldArray, event.key])
+
+      if (englishLetters.includes(event.key)) {
+        setGuesses(oldArray => [...oldArray, event.key])
+      }
 
     }
     document.addEventListener('keydown', handleOnClick)
@@ -37,7 +38,10 @@ function App() {
     })
     return letters
   }
-
+  function reset() {
+    setGuesses([])
+    setWord(randomWord)
+  }
 
   return (
     <div className="App" >
@@ -51,8 +55,7 @@ function App() {
             return (<span>_</span>)
           })
         }
-        <span>{getWrongLetters().length === 5 ? 'Lost' : ''}</span>
-        <span>{getRightLetters().join('') === word ? 'Won' : ''}</span>
+        <Result getWrongLetters={getWrongLetters} getRightLetters={getRightLetters} reset={reset} word={word} />
       </section>
     </div >
   )
